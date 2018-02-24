@@ -11,24 +11,23 @@
   "accessories": [
     {
       "accessory": "Relay",
-        "name": "Relay-1",
-        "pin": 11
-      },
-      {
-        "accessory": "Relay",
-        "name": "Relay-2",
-        "pin": 13
-      },
-      {
-        "accessory": "Relay",
-        "name": "Relay-3",
-        "pin": 15
-      },
-      {
-        "accessory": "Relay",
-        "name": "Relay-4",
-        "pin": 29
-      }
+      "name": "Relay-1",
+      "pin": 11
+    },
+    {
+      "accessory": "Relay",
+      "name": "Relay-2",
+      "pin": 13
+    },
+    {
+      "accessory": "Relay",
+      "name": "Relay-3",
+      "pin": 15
+    },
+    {
+      "accessory": "Relay",
+      "name": "Relay-4",
+      "pin": 29
     }
   ],
 
