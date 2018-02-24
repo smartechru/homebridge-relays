@@ -1,0 +1,24 @@
+{
+  "name": "homebridge-relays",
+  "version": "0.0.1",
+  "description": "Raspberry Pi relay plugin for homebridge: https://github.com/nfarina/homebridge",
+  "license": "MIT",
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
+  "author": {
+    "name": "Paul Raita"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Paulraita/homebridge-relays.git"
+  },
+  "dependencies": {
+    "request": "^2.65.0",
+    "rpio": "^0.9.12"
+  }
+}
