@@ -24,7 +24,7 @@ RelayAccessory.prototype.getRelayStatus = function(callback) {
 }
 
 RelayAccessory.prototype.setRelayOn = function(on, callback) {
-  this.binaryState = on ? 1 : 0;
+  this.binaryState = on ? 0 : 1;
   if (this.binaryState) {
     rpio.write(this.pin, rpio.HIGH);
   } else {
