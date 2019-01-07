@@ -12,7 +12,10 @@
     {
       "accessory": "Relay",
       "name": "Relay-1",
-      "pin": 11
+      "pin": 11,
+      "invert": true,
+      "default_state": false,
+      "duration_ms": 1000
     },
     {
       "accessory": "Relay",
