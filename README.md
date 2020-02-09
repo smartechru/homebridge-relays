@@ -2,22 +2,22 @@
 
 Controls 4 channel relays with a Raspberry Pi using HomeKit.
 
-# Hardware
+## Hardware
 
 The hardware is quite simple to construct.
 
 1. Raspberry Pi 3 Model B
-2. 4-relay module pins are connected to 4 GPIO pins (GPIO-17, 27, 22, 05). 
+2. 4-relay module pins are connected to 4 GPIO pins (GPIO-17, 27, 22, 05).
 
 The raspberry pi can then control the state of the relays
 
-# Installation
+## Installation
 
 1. Install homebridge using: `sudo npm install --unsafe-perm -g homebridge`
 2. Install this plugin using: `sudo npm install -g --unsafe-perm homebridge-relays`
 3. Update your configuration file. See `config-sample.json` in this repository for a sample.
 
-# Sample Configuration
+## Sample Configuration
 
     {
       "bridge": {
@@ -61,15 +61,13 @@ The raspberry pi can then control the state of the relays
       "platforms": []
     }
 
-# Accessory Configuration Options
+## Accessory Configuration Options
 
-Name             | Meaning
----------------- | ------------------------------------------------
-`accessory`      | Accessory type. `Relay` (REQUIRED)
-`name`           | Default name for the accessory. (REQUIRED)
-`pin`            | Which pin number to use for this accessory. (REQUIRED)
-`invert`         | If true, output on pin is `LOW` for `ON`, and `HIGH` for `OFF`. (Default: false)
-`default_state` | State to set on start of homebridge.  `true` for `ON`, `false` for `OFF`. (Default: `false`/`OFF`)
-`duration_ms`   | If given, accessory will stay ON for this many milliseconds, then turn OFF.  Timer resets if accessory is turned ON again while it is still ON. (Default: 0/None)
-
-
+| Name            | Meaning                                                                                                                                                         |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accessory` | Accessory type. `Relay` (REQUIRED)                                                                                                                              |
+| `name` | Default name for the accessory.(REQUIRED)                                                                                                                       |
+| `pin` | Which pin number to use for this accessory.(REQUIRED)                                                                                                           |
+| `invert` | If true, output on pin is `LOW` for `ON` , and `HIGH` for `OFF` .(Default: false)                                                                                 |
+| `default_state` | State to set on start of homebridge. `true` for `ON` , `false` for `OFF` .(Default: `false` / `OFF` )                                                              |
+| `duration_ms` | If given, accessory will stay ON for this many milliseconds, then turn OFF. Timer resets if accessory is turned ON again while it is still ON.(Default: 0/None) |

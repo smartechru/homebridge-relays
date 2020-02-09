@@ -1,38 +1,35 @@
 {
-  "bridge": {
-    "name": "RelayServer",
-    "username": "CC:22:3D:E3:CE:FA",
-    "port": 51826,
-    "pin": "031-45-155"
-  },
-
-  "description": "4 Channel Relay",
-
-  "accessories": [
-    {
-      "accessory": "Relay",
-      "name": "Relay-1",
-      "pin": 11,
-      "invert": true,
-      "default_state": false,
-      "duration_ms": 1000
-    },
-    {
-      "accessory": "Relay",
-      "name": "Relay-2",
-      "pin": 13
-    },
-    {
-      "accessory": "Relay",
-      "name": "Relay-3",
-      "pin": 15
-    },
-    {
-      "accessory": "Relay",
-      "name": "Relay-4",
-      "pin": 29
-    }
-  ],
-
-  "platforms": []
+	"bridge": {
+		"name": "RelayServer",
+		"username": "CC:22:3D:E3:CE:FA",
+		"port": 51826,
+		"pin": "031-45-155"
+	},
+	"description": "4 Channel Relay",
+	"accessories": [
+		{
+			"accessory": "Relay",
+			"name": "Relay-1",
+			"pin": 11,
+			"invert": true,
+			"default_state": false,
+			"duration_ms": 1000
+		},
+		{
+			"accessory": "Relay",
+			"name": "Relay-2",
+			"pin": 13
+		},
+		{
+			"accessory": "Relay",
+			"name": "Relay-3",
+			"pin": 15
+		},
+		{
+			"accessory": "Relay",
+			"name": "Relay-4",
+			"pin": 29
+		}
+	],
+	"platforms": []
 }
