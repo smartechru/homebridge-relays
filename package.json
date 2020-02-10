@@ -1,6 +1,6 @@
 {
   "name": "homebridge-relays",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Raspberry Pi relay plugin for homebridge: https://github.com/nfarina/homebridge",
   "license": "MIT",
   "keywords": [
@@ -27,8 +27,5 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   }
 }

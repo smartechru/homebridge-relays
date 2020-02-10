@@ -36,7 +36,7 @@ The raspberry pi can then control the state of the relays
           "pin": 11
           "invert": true,
           "default_state": false,
-          "duration": 1000
+          "duration_ms": 1000
         },
         {
           "accessory": "Relay",
@@ -44,7 +44,7 @@ The raspberry pi can then control the state of the relays
           "pin": 13
           "invert": false,
           "default_state": false,
-          "duration": 3600000
+          "duration_ms": 3600000
         },
         {
           "accessory": "Relay",
