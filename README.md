@@ -49,12 +49,15 @@ The raspberry pi can then control the state of the relays
         {
           "accessory": "Relay",
           "name": "Relay-3",
-          "pin": 15
+          "pin": 15,
+          "repeatAfter": 300,
+          "default_state": false
         },
         {
           "accessory": "Relay",
           "name": "Relay-4",
-          "pin": 29
+          "pin": 29,
+          "2ndPin" : 34
         }
       ],
 
