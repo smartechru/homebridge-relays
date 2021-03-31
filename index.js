@@ -1,85 +1,103 @@
-var Service, Characteristic;
+/**
+ * Script file: index.js
+ * Created on: Feb 28, 2018
+ * Last modified on: Mar 31, 2021
+ * 
+ * Comments:
+ *  Raspberry Pi relay controller homebridge plugin
+ */
+
 var rpio = require('rpio');
+let Service, Characteristic;
 
-module.exports = function (homebridge) {
-	Service = homebridge.hap.Service;
-	Characteristic = homebridge.hap.Characteristic;
-	homebridge.registerAccessory("homebridge-relays", "Relay", RelayAccessory);
+module.exports = function(homebridge) {
+    Service = homebridge.hap.Service;
+    Characteristic = homebridge.hap.Characteristic;
+    homebridge.registerAccessory("homebridge-relays", "Relay", RelayAccessory);
 }
 
-function RelayAccessory(log, config) {
-	this.log = log;
-	this.name = config["name"];
-	this.pin = config["pin"];
-	this.invert = defaultVal(config["invert"], false);
-	this.default = defaultVal(config["default_state"], false);
-	this.duration = defaultVal(config["duration_ms"], 0);
-	this.timerid = -1;
+class RelayAccessory {
+    constructor(log, config) {
+        /* log instance */
+        this.log = log;
 
-	if (!this.pin) throw new Error("You must provide a config value for 'pin'.");
-	if (!is_int(this.pin)) throw new Error("You must provide an integer config value for 'pin'.");
-	if (!is_int(this.duration)) throw new Error("The config value 'duration' must be an integer number of milliseconds.");
+        /* read configuration */
+        this.name = config.name;
+        this.pin = config.pin;
+        this.invert = config.invert || false;
+        this.initialState = config.initial_state || 0;
+        this.timeout = config.timeout_ms || 0;
 
-	this.log("Creating a relay named '%s', initial state: %s", this.name, (this.default ? "ON" : "OFF"));
-	rpio.open(this.pin, rpio.OUTPUT, this.gpioVal(this.default));
-}
+        /* initialize variables */
+        this.timerId = -1;
 
-RelayAccessory.prototype.getRelayStatus = function (callback) {
-	callback(null, this.readState());
-}
+        /* GPIO initialization */
+        this.log.debug("Creating a relay named '%s', initial state: %s", this.name, (this.initialState ? "ON" : "OFF"));
+        rpio.open(this.pin, rpio.OUTPUT, this.gpioVal(this.initialState));
 
-RelayAccessory.prototype.setRelayOn = function (newState, callback) {
-	if (this.timerid !== -1) {
-		clearTimeout(this.timerid);
-		this.timerid = -1;
-	}
+        /* run service */
+        this.relayService = new Service.Switch(this.name);
+    }
 
-	this.setState(newState);
-	this.log("Relay status for '%s', pin %d is %s", this.name, this.pin, newState);
+    identify(callback) {
+        this.log.debug('Accessory identified');
+        callback(null);
+    }
 
-	if (newState && this.duration > 0) {
-		this.timerid = setTimeout(this.timeOutCB, this.duration, this);
-	}
+    gpioValue(val) {
+        if (this.invert) {
+            val = !val;
+        }
+        return val ? rpio.HIGH : rpio.LOW;
+    }
 
-	callback(null);
-}
+    getRelayState() {
+        /* get relay state (ON, OFF) */
+        var val = this.gpioValue(rpio.read(this.pin) > 0);
+        return val == rpio.HIGH;
+    }
 
-RelayAccessory.prototype.timeOutCB = function (o) {
-	o.setState(false);
-	o.log("Relay for '%s', pin %d timed out.", o.name, o.pin);
-	o.timerid = -1;
-}
+    setRelayState(value) {
+        /* clear timeout if already exists */
+        if (this.timerId !== -1) {
+            clearTimeout(this.timerId);
+            this.timerId = -1;
+        }
 
-RelayAccessory.prototype.readState = function () {
-	var val = this.gpioVal(rpio.read(this.pin) > 0);
-	return val == rpio.HIGH;
-}
+        /* GPIO write operation */
+        rpio.write(this.pin, this.gpioValue(value));
+        this.log.debug("Pin %d status: %s", this.pin, value);
 
-RelayAccessory.prototype.setState = function (val) {
-	rpio.write(this.pin, this.gpioVal(val));
-}
+        /* turn off the relay if timeout is expired */
+        if (value && this.timeout > 0) {
+            this.timerId = setTimeout(() => {
+                rpio.write(this.pin, this.gpioValue(false));
+                this.log.debug("Pin %d timed out. Turned off", this.pin);
+                this.timerId = -1;
+            }, this.timeout);
+        }
+        callback(null);
+    }
 
-RelayAccessory.prototype.gpioVal = function (val) {
-	if (this.invert) val = !val;
-	return val ? rpio.HIGH : rpio.LOW;
-}
+    getServices() {
+        this.informationService = new Service.AccessoryInformation();
+        this.informationService
+            .setCharacteristic(Characteristic.Manufacturer, 'Smart Technology')
+            .setCharacteristic(Characteristic.Model, 'Multi-Relay Controller');
 
-RelayAccessory.prototype.getServices = function () {
-	var relayService = new Service.Switch(this.name);
-	relayService.getCharacteristic(Characteristic.On)
-		.on('get', this.getRelayStatus.bind(this))
-		.on('set', this.setRelayOn.bind(this));
-	return [relayService];
-}
+        /* relay control */
+        this.relayService
+            .getCharacteristic(Characteristic.On)
+            .on('get', callback => {
+                this.state = this.getRelayState();
+                this.log.debug('Relay On:', this.state);
+                callback(null, this.state);
+            })
+            .on('set', (value, callback) => {
+                this.setRelayState(value);
+                callback(null);
+            });
 
-var is_int = function (n) {
-	return n % 1 === 0;
-}
-
-var is_defined = function (v) {
-	return typeof v !== 'undefined';
-}
-
-var defaultVal = function (v, dflt) {
-	return is_defined(v) ? v : dflt;
+        return [this.informationService, this.relayService];
+    }
 }

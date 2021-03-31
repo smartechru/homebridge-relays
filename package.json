@@ -1,31 +1,33 @@
 {
-  "name": "homebridge-relays",
-  "version": "1.2.4",
-  "description": "Raspberry Pi relay plugin for homebridge: https://github.com/nfarina/homebridge",
-  "license": "MIT",
-  "keywords": [
-    "homebridge-plugin"
-  ],
-  "engines": {
-    "node": ">=8.15.0",
-    "homebridge": ">=0.4.45"
-  },
-  "author": "Smartech",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/smartechru/homebridge-relays.git"
-  },
-  "dependencies": {
-    "request": "^2.65.0",
-    "rpio": "^2.1.0"
-  },
-  "bugs": {
-    "url": "https://github.com/smartechru/homebridge-relays/issues"
-  },
-  "homepage": "https://github.com/smartechru/homebridge-relays#readme",
-  "main": "index.js",
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+    "name": "homebridge-relays",
+    "version": "2.0.0",
+    "description": "Raspberry Pi relay plugin for homebridge",
+    "license": "MIT",
+    "keywords": [
+        "homebridge-plugin",
+        "relay",
+        "homebridge",
+        "homebridge-relays"
+    ],
+    "engines": {
+        "node": ">=8.15.0",
+        "homebridge": ">=0.4.45"
+    },
+    "author": "Smartech",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/smartechru/homebridge-relays.git"
+    },
+    "dependencies": {
+        "rpio": "^2.1.0"
+    },
+    "bugs": {
+        "url": "https://github.com/smartechru/homebridge-relays/issues"
+    },
+    "homepage": "https://github.com/smartechru/homebridge-relays#readme",
+    "main": "index.js",
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    }
 }
