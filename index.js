@@ -32,15 +32,14 @@ class RelayAccessory {
         this.timerId = -1;
 
         /* GPIO initialization */
-        this.log.debug("Creating a relay named '%s', initial state: %s", this.name, (this.initialState ? "ON" : "OFF"));
-        rpio.open(this.pin, rpio.OUTPUT, this.gpioVal(this.initialState));
+        rpio.open(this.pin, rpio.OUTPUT, this.gpioValue(this.initialState));
 
         /* run service */
         this.relayService = new Service.Switch(this.name);
     }
 
     identify(callback) {
-        this.log.debug('Accessory identified');
+        this.log.debug("Accessory identified");
         callback(null);
     }
 
@@ -65,18 +64,22 @@ class RelayAccessory {
         }
 
         /* GPIO write operation */
-        rpio.write(this.pin, this.gpioValue(value));
         this.log.debug("Pin %d status: %s", this.pin, value);
+        rpio.write(this.pin, this.gpioValue(value));
 
         /* turn off the relay if timeout is expired */
         if (value && this.timeout > 0) {
             this.timerId = setTimeout(() => {
-                rpio.write(this.pin, this.gpioValue(false));
                 this.log.debug("Pin %d timed out. Turned off", this.pin);
+                rpio.write(this.pin, this.gpioValue(false));
                 this.timerId = -1;
+
+                /* update relay status */
+                this.relayService
+                    .getCharacteristic(Characteristic.On)
+                    .updateValue(false);
             }, this.timeout);
         }
-        callback(null);
     }
 
     getServices() {
@@ -90,7 +93,7 @@ class RelayAccessory {
             .getCharacteristic(Characteristic.On)
             .on('get', callback => {
                 this.state = this.getRelayState();
-                this.log.debug('Relay On:', this.state);
+                this.log.debug("Status:", this.state ? "ON" : "OFF");
                 callback(null, this.state);
             })
             .on('set', (value, callback) => {
